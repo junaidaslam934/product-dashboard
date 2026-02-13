@@ -7,20 +7,6 @@ import * as HomeActions from './home.actions';
 
 @Injectable()
 export class HomeEffects {
-  loadHero$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(HomeActions.loadHero),
-      switchMap(() =>
-        this.contentfulService.getHeroSection().pipe(
-          map(hero => HomeActions.loadHeroSuccess({ hero })),
-          catchError(error =>
-            of(HomeActions.loadHeroFailure({ error: error.message }))
-          )
-        )
-      )
-    )
-  );
-
   loadFeaturedProducts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(HomeActions.loadFeaturedProducts),
