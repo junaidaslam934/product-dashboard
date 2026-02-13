@@ -35,7 +35,7 @@
 
     <!-- Products Grid -->
     <div class="products-grid">
-      <app-card *ngFor="let product of products$ | async" class="product-card">
+      <app-card *ngFor="let product of paginatedProducts$ | async" class="product-card">
         <img [src]="product.image" [alt]="product.title" class="product-image">
         <div class="product-badge" *ngIf="product.featured">Featured</div>
         <h3>{{ product.title }}</h3>
@@ -49,6 +49,14 @@
         </div>
       </app-card>
     </div>
+
+    <!-- Pagination -->
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="(totalItems$ | async) || 0"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
 
     <!-- No Products Message -->
     <div *ngIf="(products$ | async)?.length === 0" class="no-products">

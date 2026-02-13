@@ -29,10 +29,7 @@ export class ProductExistsGuard implements CanActivate {
           return of(true);
         }
         
-        // If not in store, dispatch action to load it
         this.store.dispatch(ProductsActions.loadProductById({ id: productId }));
-        
-        // Wait for the product to be loaded
         return this.waitForProductToLoad(productId);
       }),
       catchError(() => {
@@ -54,7 +51,6 @@ export class ProductExistsGuard implements CanActivate {
       map(product => !!product),
       tap(exists => {
         if (!exists) {
-          // If product doesn't exist after loading, redirect
           this.router.navigate(['/products']);
         }
       }),

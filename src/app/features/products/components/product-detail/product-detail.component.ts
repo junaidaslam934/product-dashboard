@@ -35,22 +35,17 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('id') || '';
     
-    // Check if product is in favorites
     this.isFavorite$ = this.store.select(FavoritesSelectors.selectIsFavorite(this.productId));
     
-    // Subscribe to favorite status
     this.isFavorite$.subscribe(isFav => {
       this.isFavorite = isFav;
     });
     
-    // Try to get product from store first
     this.store.select(ProductsSelectors.selectProductById(this.productId))
       .subscribe(product => {
         if (!product) {
-          // If not in store, fetch from API
           this.store.dispatch(ProductsActions.loadProductById({ id: this.productId }));
         } else {
-          // If in store, set as selected
           this.store.dispatch(ProductsActions.loadProductByIdSuccess({ product }));
         }
       });

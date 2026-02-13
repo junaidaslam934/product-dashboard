@@ -50,13 +50,11 @@ export class ContentfulService {
   private mapProduct(entry: Entry<any>): Product {
     const fields = entry.fields as any;
     
-    // Handle rich text description
     let description = '';
     if (fields.description) {
       if (typeof fields.description === 'string') {
         description = fields.description;
       } else if (fields.description.content) {
-        // Extract text from rich text format
         description = fields.description.content
           .map((node: any) => {
             if (node.nodeType === 'paragraph' && node.content) {
@@ -73,7 +71,7 @@ export class ContentfulService {
       title: fields.title || '',
       description: description,
       price: fields.price || 0,
-      category: fields.catogary || '', // Note: Using 'catogary' to match Contentful field name
+      category: fields.catogary || '',
       image: fields.image?.fields?.file?.url ? `https:${fields.image.fields.file.url}` : '',
       featured: fields.featured || false
     };

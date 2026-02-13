@@ -21,7 +21,6 @@ export class FavoritesListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Favorites are already loaded in app.component.ts on app start
   }
 
   onRemoveFromFavorites(productId: string): void {

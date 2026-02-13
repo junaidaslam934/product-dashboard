@@ -6,6 +6,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     LoaderComponent,
     ErrorMessageComponent,
     ToastComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    PaginationComponent
   ],
   imports: [
     CommonModule
@@ -25,7 +27,8 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     LoaderComponent,
     ErrorMessageComponent,
     ToastComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    PaginationComponent
   ]
 })
 export class SharedModule { }

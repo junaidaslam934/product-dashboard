@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    // Load favorites from localStorage on app start
     this.store.dispatch(FavoritesActions.loadFavoritesFromStorage());
   }
 }
