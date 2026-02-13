@@ -1,0 +1,8 @@
+<div class="error-container">
+  <div class="error-icon">⚠️</div>
+  <h3>{{ title }}</h3>
+  <p>{{ message }}</p>
+  <app-button *ngIf="showRetry" type="primary" (clicked)="onRetry()">
+    Retry
+  </app-button>
+</div>

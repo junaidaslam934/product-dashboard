@@ -1,0 +1,66 @@
+<div class="home-container">
+  <!-- Loading State -->
+  <app-loader *ngIf="loading$ | async" message="Loading content..."></app-loader>
+
+  <!-- Error State -->
+  <app-error-message 
+    *ngIf="(error$ | async) && !(loading$ | async)"
+    [message]="(error$ | async) || ''"
+    (retry)="onRetry()">
+  </app-error-message>
+
+  <!-- Content -->
+  <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+    <!-- Hero Section (Static) -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="hero-badge">New Collection</span>
+          <h1>Discover Premium Products</h1>
+          <p>Shop the latest collection of high-quality products curated just for you</p>
+          <div class="hero-actions">
+            <app-button type="primary" [routerLink]="['/products']">
+              Shop Now
+            </app-button>
+            <app-button type="outline" [routerLink]="['/favorites']">
+              View Favorites
+            </app-button>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Products</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">50K+</span>
+            <span class="stat-label">Happy Customers</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Support</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="featured-products">
+      <h2>Featured Products</h2>
+      <div class="products-grid">
+        <app-card *ngFor="let product of featuredProducts$ | async" class="product-card">
+          <img [src]="product.image" [alt]="product.title" class="product-image">
+          <h3>{{ product.title }}</h3>
+          <p class="product-category">{{ product.category }}</p>
+          <p class="product-description">{{ product.description }}</p>
+          <div class="product-footer">
+            <span class="product-price">${{ product.price }}</span>
+            <app-button type="outline" [routerLink]="['/products', product.id]">
+              View Details
+            </app-button>
+          </div>
+        </app-card>
+      </div>
+    </section>
+  </ng-container>
+</div>

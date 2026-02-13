@@ -1,0 +1,61 @@
+<div class="products-container">
+  <h1>All Products</h1>
+
+  <!-- Loading State -->
+  <app-loader *ngIf="loading$ | async" message="Loading products..."></app-loader>
+
+  <!-- Error State -->
+  <app-error-message 
+    *ngIf="(error$ | async) && !(loading$ | async)"
+    [message]="(error$ | async) || ''"
+    (retry)="onRetry()">
+  </app-error-message>
+
+  <!-- Content -->
+  <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <h3>Filter by Category</h3>
+      <div class="filter-buttons">
+        <app-button 
+          type="outline" 
+          [class.active]="!(selectedCategory$ | async)"
+          (clicked)="onClearFilter()">
+          All Products
+        </app-button>
+        <app-button 
+          *ngFor="let category of categories$ | async"
+          type="outline"
+          [class.active]="(selectedCategory$ | async) === category"
+          (clicked)="onFilterByCategory(category)">
+          {{ category }}
+        </app-button>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid">
+      <app-card *ngFor="let product of products$ | async" class="product-card">
+        <img [src]="product.image" [alt]="product.title" class="product-image">
+        <div class="product-badge" *ngIf="product.featured">Featured</div>
+        <h3>{{ product.title }}</h3>
+        <p class="product-category">{{ product.category }}</p>
+        <p class="product-description">{{ product.description }}</p>
+        <div class="product-footer">
+          <span class="product-price">${{ product.price }}</span>
+          <app-button type="primary" [routerLink]="['/products', product.id]">
+            View Details
+          </app-button>
+        </div>
+      </app-card>
+    </div>
+
+    <!-- No Products Message -->
+    <div *ngIf="(products$ | async)?.length === 0" class="no-products">
+      <p>No products found in this category.</p>
+      <app-button type="primary" (clicked)="onClearFilter()">
+        Show All Products
+      </app-button>
+    </div>
+  </ng-container>
+</div>

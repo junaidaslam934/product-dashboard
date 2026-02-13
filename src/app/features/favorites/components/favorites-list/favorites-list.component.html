@@ -1,0 +1,61 @@
+<div class="favorites-container">
+  <div class="favorites-header">
+    <h1>My Favorites</h1>
+    <div class="favorites-count" *ngIf="(favoritesCount$ | async) as count">
+      {{ count }} {{ count === 1 ? 'item' : 'items' }}
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <app-confirmation-modal
+    [show]="showConfirmation"
+    title="Clear All Favorites?"
+    message="Are you sure you want to remove all favorites? This action cannot be undone."
+    icon="⚠️"
+    confirmText="Yes, Clear All"
+    cancelText="Cancel"
+    confirmType="primary"
+    (confirm)="onConfirmClear()"
+    (cancel)="onCancelClear()">
+  </app-confirmation-modal>
+
+  <!-- Empty State -->
+  <div *ngIf="(favorites$ | async)?.length === 0" class="empty-state">
+    <div class="empty-icon">❤️</div>
+    <h2>No favorites yet</h2>
+    <p>Start adding products to your favorites to see them here!</p>
+    <app-button type="primary" [routerLink]="['/products']">
+      Browse Products
+    </app-button>
+  </div>
+
+  <!-- Favorites List -->
+  <ng-container *ngIf="(favorites$ | async)?.length as count">
+    <div class="favorites-actions">
+      <app-button type="outline" (clicked)="onClearAll()">
+        Clear All
+      </app-button>
+    </div>
+
+    <div class="favorites-grid">
+      <app-card *ngFor="let product of favorites$ | async" class="favorite-card">
+        <img [src]="product.image" [alt]="product.title" class="product-image">
+        <div class="product-badge" *ngIf="product.featured">Featured</div>
+        <h3>{{ product.title }}</h3>
+        <p class="product-category">{{ product.category }}</p>
+        <p class="product-description">{{ product.description }}</p>
+        <div class="product-footer">
+          <span class="product-price">${{ product.price }}</span>
+          <div class="product-actions">
+            <app-button type="primary" [routerLink]="['/products', product.id]">
+              View
+            </app-button>
+            <app-button type="outline" (clicked)="onRemoveFromFavorites(product.id)">
+              Remove
+            </app-button>
+          </div>
+        </div>
+      </app-card>
+    </div>
+  </ng-container>
+</div>

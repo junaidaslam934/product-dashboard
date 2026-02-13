@@ -1,0 +1,62 @@
+<div class="product-detail-container">
+  <!-- Loading State -->
+  <app-loader *ngIf="loading$ | async" message="Loading product details..."></app-loader>
+
+  <!-- Error State -->
+  <app-error-message 
+    *ngIf="(error$ | async) && !(loading$ | async)"
+    [message]="(error$ | async) || ''"
+    (retry)="onRetry()">
+  </app-error-message>
+
+  <!-- Product Details -->
+  <ng-container *ngIf="(product$ | async) as product">
+    <div class="product-detail">
+      <!-- Back Button -->
+      <div class="back-button">
+        <app-button type="outline" (clicked)="onBack()">
+          ← Back to Products
+        </app-button>
+      </div>
+
+      <!-- Product Content -->
+      <div class="product-content">
+        <!-- Product Image -->
+        <div class="product-image-section">
+          <img [src]="product.image" [alt]="product.title" class="product-image">
+          <div class="product-badge" *ngIf="product.featured">Featured Product</div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+          <div class="product-category">{{ product.category }}</div>
+          <h1 class="product-title">{{ product.title }}</h1>
+          <div class="product-price">${{ product.price }}</div>
+          
+          <div class="product-description">
+            <h3>Description</h3>
+            <p>{{ product.description }}</p>
+          </div>
+
+          <div class="product-actions">
+            <app-button 
+              [type]="isFavorite ? 'secondary' : 'primary'" 
+              [fullWidth]="true"
+              (clicked)="onToggleFavorite(product)">
+              {{ isFavorite ? '❤️ Remove from Favorites' : '🤍 Add to Favorites' }}
+            </app-button>
+          </div>
+
+          <div class="product-meta">
+            <div class="meta-item">
+              <strong>Category:</strong> {{ product.category }}
+            </div>
+            <div class="meta-item" *ngIf="product.featured">
+              <strong>Status:</strong> <span class="featured-tag">Featured</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
